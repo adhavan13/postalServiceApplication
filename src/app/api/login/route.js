@@ -7,7 +7,7 @@ export async function POST(request) {
     try {
         const { email, password } = await request.json();
         await connectToDatabase();
-
+        // console.log("kkjk")
         const user = await User.findOne({ email });
         if (!user) {
             return new Response(JSON.stringify({ error: 'User not found' }), { status: 404 });

@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { Mail, Lock, Mailbox } from "lucide-react";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
@@ -18,34 +18,21 @@ export default function Login() {
     }
   }, [router]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setError("");
 
-    if (!email || !password) {
-      setError("Please enter both email and password.");
+    if (!username || !password) {
+      setError("Please enter both username and password.");
       return;
     }
 
-    try {
-      const res = await fetch("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.error || "Something went wrong");
-      }
-
-      const { token } = data;
-
-      localStorage.setItem("token", token);
+    if (username === "kanish" && password === "12345") {
+      // Simulate token for static login
+      localStorage.setItem("token", "static-token");
       router.push("/dashboard");
-    } catch (err) {
-      setError(err.message);
+    } else {
+      setError("Invalid username or password.");
     }
   };
 
@@ -97,8 +84,8 @@ export default function Login() {
 
           <p className="text-gray-500 text-center mt-4">
             Use these demo credentials: <br />
-            <strong>Email:</strong> a@g.c <br />
-            <strong>Password:</strong> 123
+            <strong>Username:</strong> kanish <br />
+            <strong>Password:</strong> 12345
           </p>
         </div>
 
@@ -113,10 +100,10 @@ export default function Login() {
               <Mail className="text-red-500 w-5 h-5" />
             </div>
             <input
-              type="email"
-              placeholder="Email Address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               required
               className="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-400 transition duration-300"
             />
